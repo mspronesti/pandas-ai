@@ -323,12 +323,13 @@ class PandasAI:
 
         if isinstance(node, (ast.Import, ast.ImportFrom)):
             for alias in node.names:
-                if alias.name in WHITELISTED_BUILTINS:
+                alias_name = alias.name.split(".")[0]
+                if alias_name in WHITELISTED_BUILTINS:
                     return True
-                if alias.name in WHITELISTED_OPTIONAL_LIBRARIES:
+                if alias_name in WHITELISTED_OPTIONAL_LIBRARIES:
                     import_optional_dependency(alias.name)
                     continue
-                if alias.name not in WHITELISTED_LIBRARIES:
+                if alias_name not in WHITELISTED_LIBRARIES:
                     raise BadImportError(alias.name)
 
         return False
